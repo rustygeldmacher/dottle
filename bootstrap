@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Source this from bash_profile to bootstrap dottle
+
+export DOTTLE_HOME=`dirname $BASH_SOURCE`
+source "$DOTTLE_HOME/dottle-functions"
+
+export PATH=$DOTTLE_HOME/bin:$PATH
+
+for topic in $(dottle_topics)
+do
+  export TOPIC_PATH="$HOME/.dottle/topics/$topic"
+  # Add a topic's bin directory to the path
+  if [ -d $TOPIC_PATH/bin ]; then
+    export PATH=$TOPIC_PATH/bin:$PATH
+  fi
+  # Initialize the topic
+  if [ -f $TOPIC_PATH/init ]; then
+    source $TOPIC_PATH/init
+  fi
+done
+
+unset TOPIC_PATH
+
+

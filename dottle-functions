@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function dottle_topics {
+  cat $DOTTLE_HOME/topics/topics-enabled
+}
+
+# Creates a symlink to the file
+# Arguments:
+# $1 => source file
+# $2 => destination file
+# Lots of quoting below to handle paths with spaces in them
+# TODO: Warn/backup on overwriting non-symlinked destination file
+function link_file {
+  local source_file=$1
+  local destination_file=$2
+  local destination_dir=`dirname "$2"`
+  if [ ! -d "$destination_dir" ]; then
+    mkdir -p "$destination_dir"
+  fi
+  if [ -e "$destination_file" -o -L "$destination_file" ]; then
+    # TODO: Back it up instead?
+    rm -f "$destination_file"
+  fi
+  ln -s "$source_file" "$destination_file"
+}
