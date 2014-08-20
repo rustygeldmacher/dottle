@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cat $DOTTLE_HOME/topics/topics-enabled
+
