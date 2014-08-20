@@ -8,6 +8,8 @@ if [ "$DOTTLE_HOME" = "" ]; then
   exit 1
 fi
 
+PATH=$DOTTLE_HOME/bin:$PATH
+
 # TODO: check for prereqs (find)
 
 if [ "$1" != "" ]; then
