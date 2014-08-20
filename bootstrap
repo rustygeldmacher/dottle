@@ -5,6 +5,11 @@
 export DOTTLE_HOME=`dirname $BASH_SOURCE`
 export PATH=$DOTTLE_HOME/bin:$PATH
 
+PLATFORM=`uname | tr [A-Z] [a-z]`
+if [[ $PLATFORM == "darwin" ]]; then
+  PLATFORM=osx
+fi
+
 for topic in $(dottle-topics)
 do
   export TOPIC_PATH="$DOTTLE_HOME/topics/$topic"
@@ -15,6 +20,10 @@ do
   # Initialize the topic
   if [ -f $TOPIC_PATH/init ]; then
     source $TOPIC_PATH/init
+  fi
+  # Initialize the topic platform-specific
+  if [ -f $TOPIC_PATH/init-$PLATFORM ]; then
+    source $TOPIC_PATH/init-$PLATFORM
   fi
 done
 
