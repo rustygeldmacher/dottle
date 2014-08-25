@@ -10,7 +10,7 @@ if [[ $PLATFORM == "darwin" ]]; then
   PLATFORM=osx
 fi
 
-for topic in $(dottle-topics)
+for topic in $(dottle topics)
 do
   export TOPIC_PATH="$DOTTLE_HOME/topics/$topic"
   # Add a topic's bin directory to the path

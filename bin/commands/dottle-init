@@ -15,7 +15,7 @@ PATH=$DOTTLE_HOME/bin:$PATH
 if [ "$1" != "" ]; then
   topics=$1
 else
-  topics=$(dottle-topics)
+  topics=$(dottle topics)
 fi
 
 for topic in $topics
@@ -28,7 +28,7 @@ do
     source_file="$topic_dir/$(echo $file | sed -e 's/^\.\///')"
     destination_file=`echo $file | sed -e 's/\.symlink$//' | sed -e 's/^\.\///' | sed -e 's/^_//'`
     destination_file="$HOME/.$destination_file"
-    dottle-symlink $source_file $destination_file
+    dottle symlink $source_file $destination_file
   done
 
   install_script="$DOTTLE_HOME/topics/$topic/install"
