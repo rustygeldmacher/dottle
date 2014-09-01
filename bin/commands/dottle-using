@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo Using the following topics:
+
+for topic in $(cat $DOTTLE_HOME/topics/topics-enabled)
+do
+  if [[ ! -z $topic ]]
+  then
+    echo "* $topic"
+  fi
+done
+
