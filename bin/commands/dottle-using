@@ -1,12 +1,27 @@
 #!/bin/bash
 
-echo Using the following topics:
+command=$1
+if [[ -z "$command" ]]; then
+  command=list
+fi
 
-for topic in $(cat $DOTTLE_HOME/topics/topics-enabled)
-do
-  if [[ ! -z $topic ]]
-  then
-    echo "* $topic"
-  fi
-done
+usings=$DOTTLE_HOME/topics/topics-enabled
+if [[ ! -e "$usings" ]]; then
+  touch $usings
+fi
+
+case "$command" in
+  list)
+    echo Using the following topics:
+    for topic in $(cat $usings)
+    do
+      if [[ ! -z $topic ]]; then
+        echo "* $topic"
+      fi
+    done
+    ;;
+  edit)
+    $EDITOR $usings
+    ;;
+esac
 
