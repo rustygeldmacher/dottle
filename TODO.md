@@ -1,8 +1,9 @@
 * Use .sh extension for scripts (init, install, etc.)
 * A "verbose" or "debug" mode
 * Ideal usage:
-    dottle list -- lists all available topics
-    dottle using -- lists all used topics
+    dottle list -- lists all topics
+      dottle list using -- list topics being used
+      dottle list available -- list topics not being used
     dottle check -- checks for proper system requirements
     dottle clone [repo] -- Adds a topic repo
     dottle use [repo]/[topic] -- Enables a topic from a repo
