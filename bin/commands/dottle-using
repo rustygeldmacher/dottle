@@ -17,11 +17,17 @@ fi
 
 case "$command" in
   list)
-    echo Using the following topics:
+    if [[ -t 1 ]]; then
+      echo Using the following topics:
+    fi
     for topic in $(cat $usings)
     do
       if [[ ! -z $topic ]]; then
-        echo "* $topic"
+        if [[ -t 1 ]]; then
+          echo "* $topic"
+        else
+          echo $topic
+        fi
       fi
     done
     ;;
