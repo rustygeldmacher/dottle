@@ -1,9 +1,0 @@
-#!/bin/bash
-
-TOPICS_FILE=$DOTTLE_HOME/topics/topics-enabled
-
-if [[ -f $TOPICS_FILE ]]
-then
-  cat $DOTTLE_HOME/topics/topics-enabled
-fi
-
