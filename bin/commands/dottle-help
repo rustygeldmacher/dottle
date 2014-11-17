@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ "$1" == "--help" ]]; then
+  exit 0
+fi
+
+echo "Available dottle commands:"
+
+for cmd in $(ls $DOTTLE_HOME/bin/commands); do
+  command_name=$(echo $cmd | sed -E 's/dottle-//')
+  help_text=$(dottle $command_name --help)
+  if [[ ! -z "$help_text" ]]; then
+    printf "* %-10s %s\n" "$command_name" "$help_text"
+  fi
+done

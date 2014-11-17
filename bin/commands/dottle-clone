@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+  echo "Clone a repository containing dottle topics"
+  exit 0
+fi
+
 REPO=$1
 if [[ -z $REPO ]]
 then

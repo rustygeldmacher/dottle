@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+  echo "First time dottle initialization. Only needs to be run once."
+  exit 0
+fi
+
 # For first-time installation, DOTTLE_HOME is not initialized
 if [ "$DOTTLE_HOME" = "" ]; then
   echo DOTTLE_HOME is not set

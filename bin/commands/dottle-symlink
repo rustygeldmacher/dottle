@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+  exit 0
+fi
+
 # Creates a symlink to the file
 # Arguments:
 # $1 => source file
