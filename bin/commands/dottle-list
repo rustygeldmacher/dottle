@@ -1,0 +1,83 @@
+#!/bin/bash
+
+if [[ "$1" == "--help" ]]; then
+  echo "List topics or repositories"
+  exit 0
+fi
+
+command=$1
+if [[ -z "$command" ]]; then
+  command=all
+fi
+
+usings=$DOTTLE_HOME/topics/topics-enabled
+if [[ ! -e "$usings" ]]; then
+  touch $usings
+fi
+
+function echo_terminal()
+{
+  if [[ ! -z "$1" && -t 1 ]]; then
+    echo "$1"
+  elif [[ ! -z "$2" ]]; then
+    echo "$2"
+  fi
+}
+
+function all_topics()
+{
+  pushd $DOTTLE_HOME/topics > /dev/null
+  for topic in $(find . -maxdepth 2 -mindepth 2 -type d -follow -not -name '*.git'); do
+    echo $topic | cut -c 3-
+  done
+  popd > /dev/null
+}
+
+function echo_using()
+{
+  echo_terminal "+ $1" "$1"
+}
+
+function echo_not_using()
+{
+  echo_terminal "- $1" "$1"
+}
+
+function is_using()
+{
+  local topic=$1
+  if [[ ! -z $topic ]]; then
+    if $(grep -E "^$topic$" $usings > /dev/null); then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+case "$command" in
+  all)
+    echo_terminal "All dottle topics:"
+    ;;
+  using)
+    echo_terminal "All topics currently in use:"
+    ;;
+  available)
+    echo_terminal "All available topics:"
+    ;;
+esac
+
+for topic in $(all_topics); do
+  if $(is_using "$topic"); then
+    case "$command" in
+      all|using)
+        echo_using "$topic"
+        ;;
+    esac
+  else
+    case "$command" in
+      all|available)
+        echo_not_using "$topic"
+        ;;
+    esac
+  fi
+done
