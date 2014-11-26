@@ -15,7 +15,9 @@
     dottle status -- shows which repos/topics have local modifications
     dottle diff [repo]/[topic] -- shows a diff of local changes for a repo
     dottle open [repo]/[topic] -- open the repo and/or topic in an editor
+    dottle cd [repo]/[topic] -- change to the directory of the topic or repo
 
+* Add 'dottle cd'
 * Add installation script
 * Add 'dottle new' to create a new repository or topic
 * Add 'dottle config' for getting config values

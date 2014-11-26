@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [[ "$1" == "--help" ]]; then
+  echo "Show changes in a repository"
+  exit 0
+fi
+
+function git_diff()
+{
+  pushd $1 > /dev/null
+  if [[ -e ".git" ]]; then
+    if [[ -n "$(git status --short)" ]]; then
+      git diff
+    else
+      echo " * No local changes"
+    fi
+  else
+    echo " * Not under source control"
+  fi
+  popd > /dev/null
+}
+
+function dottle_diff()
+{
+  echo "Dottle:"
+  git_diff "$DOTTLE_HOME"
+}
+
+function repo_diff()
+{
+  local repo=$1
+  echo "Repository: $repo"
+  git_diff "$DOTTLE_HOME/topics/$repo"
+}
+
+repo=$1
+
+if [[ -z "$repo" ]]; then
+  dottle_diff
+  for repo in $(find $DOTTLE_HOME/topics -mindepth 1 -maxdepth 1 -type d -or -type l); do
+    repo=$(basename $repo)
+    repo_diff $repo
+  done
+elif [[ "$repo" == "dottle" ]]; then
+  dottle_diff
+else
+  repo_diff $repo
+fi
+
