@@ -3,7 +3,16 @@
 # Source this from bash_profile to bootstrap dottle
 
 export DOTTLE_HOME=`dirname $BASH_SOURCE`
-export PATH=$DOTTLE_HOME/bin:$PATH
+
+function dottle() {
+  if [[ -z "$1" ]]; then
+    $DOTTLE_HOME/bin/commands/dottle-help dottle
+  else
+    COMMAND_SCRIPT=$DOTTLE_HOME/bin/commands/dottle-$1
+    $COMMAND_SCRIPT ${*:2}
+  fi
+}
+export -f dottle
 
 PLATFORM=`uname | tr [A-Z] [a-z]`
 if [[ $PLATFORM == "darwin" ]]; then

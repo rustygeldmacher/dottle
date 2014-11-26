@@ -4,6 +4,15 @@ if [[ "$1" == "--help" ]]; then
   exit 0
 fi
 
+if [[ "$1" == "dottle" ]]; then
+  echo "--"
+  echo "Usage: dottle <command>"
+  echo
+  echo "Please supply a command to run."
+  echo "Run 'dottle help' to see a list."
+  exit 1
+fi
+
 echo "Available dottle commands:"
 
 for cmd in $(ls $DOTTLE_HOME/bin/commands); do
