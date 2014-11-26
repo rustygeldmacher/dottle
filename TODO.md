@@ -10,8 +10,15 @@
       If no topic is given, all topics from the repo are used
     dottle remove [repo]/[topic] -- stops using the topic
       If no topic is given, all topics from the repo are removed
-    dottle pull [repo] -- updates the topic repo
-    dottle modified -- shows which repos/topics have local modifications
+    dottle update [repo] -- updates the topic repo
+      dottle update dottle -- updates dottle itself
+    dottle status -- shows which repos/topics have local modifications
     dottle diff [repo]/[topic] -- shows a diff of local changes for a repo
     dottle open [repo]/[topic] -- open the repo and/or topic in an editor
+
+* Add installation script
+* Add 'dottle new' to create a new repository or topic
+* Add 'dottle config' for getting config values
+* init topic after using
+* list topics in repo after cloning
 

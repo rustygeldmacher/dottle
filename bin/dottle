@@ -1,10 +1,9 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]
-then
+if [[ -z "$1" ]]; then
   echo "Usage: dottle <command>"
   echo Please supply a command to run
-  echo Run 'dottle commands' to see a list
+  echo Run 'dottle help' to see a list
   exit 1
 fi
 
