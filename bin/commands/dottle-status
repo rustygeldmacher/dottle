@@ -7,14 +7,24 @@ fi
 
 repo=$1
 
+function git_status()
+{
+  pushd $1 > /dev/null
+  changed=$(git status --short)
+  if [[ -n "$changed" ]]; then
+    git status --short
+  else
+    echo " * No local changes"
+  fi
+  popd > /dev/null
+}
+
 function repo_status()
 {
   local repo=$1
   echo "Repository: $repo"
   if [[ -e "$DOTTLE_HOME/topics/$repo/.git" ]]; then
-    pushd $DOTTLE_HOME/topics/$repo > /dev/null
-    git status --short
-    popd > /dev/null
+    git_status "$DOTTLE_HOME/topics/$repo"
   else
     echo " * Not under source control"
   fi
@@ -23,9 +33,7 @@ function repo_status()
 function dottle_status()
 {
   echo Dottle:
-  pushd $DOTTLE_HOME > /dev/null
-  git status --short
-  popd > /dev/null
+  git_status "$DOTTLE_HOME"
 }
 
 if [[ -z "$repo" ]]; then
