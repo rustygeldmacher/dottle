@@ -7,6 +7,14 @@ export DOTTLE_HOME=`dirname $BASH_SOURCE`
 function dottle() {
   if [[ -z "$1" ]]; then
     $DOTTLE_HOME/bin/commands/dottle-help dottle
+  elif [[ "$1" == "cd" ]]; then
+    if [[ -z "$2" ]]; then
+      cd $DOTTLE_HOME
+    elif [[ -d "$DOTTLE_HOME/topics/$2" ]]; then
+      cd "$DOTTLE_HOME/topics/$2"
+    else
+      echo "No such repository: $2"
+    fi
   else
     COMMAND_SCRIPT=$DOTTLE_HOME/bin/commands/dottle-$1
     $COMMAND_SCRIPT ${*:2}
