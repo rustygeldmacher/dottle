@@ -15,6 +15,28 @@ function dottle() {
     else
       echo "No such repository: $2"
     fi
+  elif [[ "$1" == "init" ]]; then
+    local topic=$2
+    export TOPIC_PATH="$DOTTLE_HOME/topics/$topic"
+    if [[ -d "$TOPIC_PATH" ]]; then
+      # Add a topic's bin directory to the path
+      if [[ -d $TOPIC_PATH/bin ]]; then
+        export PATH=$TOPIC_PATH/bin:$PATH
+      fi
+      # Initialize the topic
+      if [[ -f $TOPIC_PATH/init ]]; then
+        source $TOPIC_PATH/init
+      fi
+      # Initialize the topic platform-specific
+      local platform=`uname | tr [A-Z] [a-z]`
+      if [[ $platform == "darwin" ]]; then
+        platform=osx
+      fi
+      if [[ -f $TOPIC_PATH/init-$platform ]]; then
+        source $TOPIC_PATH/init-$platform
+      fi
+    fi
+    unset TOPIC_PATH
   else
     COMMAND_SCRIPT=$DOTTLE_HOME/bin/commands/dottle-$1
     $COMMAND_SCRIPT ${*:2}
@@ -22,27 +44,7 @@ function dottle() {
 }
 export -f dottle
 
-PLATFORM=`uname | tr [A-Z] [a-z]`
-if [[ $PLATFORM == "darwin" ]]; then
-  PLATFORM=osx
-fi
-
 for topic in $(dottle list using)
 do
-  export TOPIC_PATH="$DOTTLE_HOME/topics/$topic"
-  # Add a topic's bin directory to the path
-  if [ -d $TOPIC_PATH/bin ]; then
-    export PATH=$TOPIC_PATH/bin:$PATH
-  fi
-  # Initialize the topic
-  if [ -f $TOPIC_PATH/init ]; then
-    source $TOPIC_PATH/init
-  fi
-  # Initialize the topic platform-specific
-  if [ -f $TOPIC_PATH/init-$PLATFORM ]; then
-    source $TOPIC_PATH/init-$PLATFORM
-  fi
+  dottle init $topic
 done
-
-unset TOPIC_PATH
-

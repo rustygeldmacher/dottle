@@ -37,8 +37,10 @@ do
   if $(grep "$repo/$topic" $USING_FILE > /dev/null); then
     echo "* Already using: $repo/$topic"
   else
-    echo "* Now using: $repo/$topic"
+    dottle install $repo/$topic
+    dottle init $repo/$topic
     echo $repo/$topic >> $USING_FILE
+    echo "* Now using: $repo/$topic"
   fi
 done
 

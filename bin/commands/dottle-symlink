@@ -1,7 +1,19 @@
 #!/bin/bash
 
 if [[ "$1" == "--help" ]]; then
+  echo "Symlink all the files in a given topic"
   exit 0
+fi
+
+if [[ -z "$1" ]]; then
+  echo "Usage: dottle symlink [repo][/topic]"
+  exit 1
+fi
+
+topic_dir="$DOTTLE_HOME/topics/$1"
+if [[ ! -d "$topic_dir" ]]; then
+  echo "No such topic: $1"
+  exit 1
 fi
 
 # Creates a symlink to the file
@@ -9,19 +21,29 @@ fi
 # $1 => source file
 # $2 => destination file
 # TODO: Warn/backup on overwriting non-symlinked destination file
+function create_symlink()
+{
+  # Lots of quoting below to handle paths with spaces in them
+  source_file=$1
+  destination_file=$2
+  destination_dir=`dirname "$2"`
 
-# Lots of quoting below to handle paths with spaces in them
-source_file=$1
-destination_file=$2
-destination_dir=`dirname "$2"`
+  if [ ! -d "$destination_dir" ]; then
+    mkdir -p "$destination_dir"
+  fi
+  if [ -e "$destination_file" -o -L "$destination_file" ]; then
+    # TODO: Back it up instead?
+    rm -f "$destination_file"
+  fi
+  ln -s "$source_file" "$destination_file"
+}
 
-if [ ! -d "$destination_dir" ]; then
-  mkdir -p "$destination_dir"
-fi
-if [ -e "$destination_file" -o -L "$destination_file" ]; then
-  # TODO: Back it up instead?
-  rm -f "$destination_file"
-fi
-ln -s "$source_file" "$destination_file"
-
+symlink_files=`cd $topic_dir && find . -name "*.symlink" 2> /dev/null`
+for file in $symlink_files
+do
+  source_file="$topic_dir/$(echo $file | sed -e 's/^\.\///')"
+  destination_file=`echo $file | sed -e 's/\.symlink$//' | sed -e 's/^\.\///' | sed -e 's/^_//'`
+  destination_file="$HOME/.$destination_file"
+  create_symlink $source_file $destination_file
+done
 

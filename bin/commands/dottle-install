@@ -1,11 +1,18 @@
 #!/bin/bash
 
 if [[ "$1" == "--help" ]]; then
-  echo "First time dottle initialization. Only needs to be run once."
+  echo "Install a topic"
   exit 0
 fi
 
-# For first-time installation, DOTTLE_HOME is not initialized
+if [[ -z "$1" ]]; then
+  echo "Usage: dottle install"
+  echo "* Run installation for all used topics"
+  echo "Usage: dottle install [repo/topic]"
+  echo "* Run installation for a topic"
+  exit 1
+fi
+
 if [ "$DOTTLE_HOME" = "" ]; then
   echo DOTTLE_HOME is not set
   echo If this is your first time running, run dottle-init like this:
@@ -13,32 +20,25 @@ if [ "$DOTTLE_HOME" = "" ]; then
   exit 1
 fi
 
-PATH=$DOTTLE_HOME/bin:$PATH
+PATH=$DOTTLE_HOME/bin/commands:$PATH
 
 # TODO: check for prereqs (find)
 
 if [ "$1" != "" ]; then
   topics=$1
 else
-  topics=$(dottle topics)
+  topics=$(dottle-list using)
 fi
 
 for topic in $topics
 do
   echo "Installing topic $topic..."
   topic_dir="$DOTTLE_HOME/topics/$topic"
-  symlink_files=`cd $topic_dir && find . -name "*.symlink" 2> /dev/null`
-  for file in $symlink_files
-  do
-    source_file="$topic_dir/$(echo $file | sed -e 's/^\.\///')"
-    destination_file=`echo $file | sed -e 's/\.symlink$//' | sed -e 's/^\.\///' | sed -e 's/^_//'`
-    destination_file="$HOME/.$destination_file"
-    dottle symlink $source_file $destination_file
-  done
+
+  dottle-symlink $topic
 
   install_script="$DOTTLE_HOME/topics/$topic/install"
   if [ -f  $install_script ]; then
     TOPIC_PATH=$topic_dir $install_script
   fi
 done
-
