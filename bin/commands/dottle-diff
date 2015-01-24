@@ -28,13 +28,14 @@ function dottle_diff()
 
 function repo_diff()
 {
-  local repo="$DOTTLE_HOME/topics/$1"
-  if [[ ! -d $repo ]]; then
-    echo "No such repository: $1"
+  local repo=$1
+  local repo_path="$DOTTLE_HOME/topics/$1"
+  if [[ ! -d $repo_path ]]; then
+    echo "No such repository: $repo"
     exit 1
   fi
   echo "Repository: $repo"
-  git_diff "$DOTTLE_HOME/topics/$repo"
+  git_diff "$repo_path"
 }
 
 repo=$1
