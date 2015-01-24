@@ -1,5 +1,4 @@
-Dottle
-======
+# Dottle
 
 Dottle is sort of a cross between Homeshick and Zach Holmans dotfiles repository.
 
@@ -9,6 +8,21 @@ Topic layout:
   * install -- script that will be run when the topic is installed
   * filename.ext.symlink -- will be symlinked to $HOME/.file.ext
   *  _dir/file.symlink -- will symlink file into $HOME/.dir/
+
+## Installation
+
+* Clone dottle:
+    git clone git@github.com:rustygeldmacher/dottle.git ~/.dottle
+* Put this line somewhere in your ~/.bashrc:
+    source $HOME/.dottle/bootstrap
+* Start a new shell so dottle is enabled
+* Clone a repository, for instance:
+    dottle clone <your-github-name>/dotfiles dotfiles
+* Either use your entire repo:
+    dottle use dotfiles
+* Or use specific topics:
+    dottle use dotfiles/<topic>
+
 
 
 
