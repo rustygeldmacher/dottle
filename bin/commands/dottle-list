@@ -12,6 +12,7 @@ fi
 
 usings=$DOTTLE_HOME/topics/topics-enabled
 if [[ ! -e "$usings" ]]; then
+  mkdir -p $(dirname $usings)
   touch $usings
 fi
 
