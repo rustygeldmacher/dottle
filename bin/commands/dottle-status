@@ -5,7 +5,7 @@ if [[ "$1" == "--help" ]]; then
   exit 0
 fi
 
-function git_status()
+function git_local_status()
 {
   pushd $1 > /dev/null
   changed=$(git status --short)
@@ -17,12 +17,25 @@ function git_status()
   popd > /dev/null
 }
 
+function git_remote_status()
+{
+  pushd $1 > /dev/null
+  git fetch > /dev/null
+  if [[ $(git log --oneline HEAD..origin | wc -l) -gt 0 ]]; then
+    echo " * Remote changes exist"
+  else
+    echo " * No remote changes"
+  fi
+  popd > /dev/null
+}
+
 function repo_status()
 {
   local repo=$1
   echo "Repository: $repo"
   if [[ -e "$DOTTLE_HOME/topics/$repo/.git" ]]; then
-    git_status "$DOTTLE_HOME/topics/$repo"
+    git_local_status "$DOTTLE_HOME/topics/$repo"
+    git_remote_status "$DOTTLE_HOME/topics/$repo"
   else
     echo " * Not under source control"
   fi
@@ -31,7 +44,8 @@ function repo_status()
 function dottle_status()
 {
   echo Dottle:
-  git_status "$DOTTLE_HOME"
+  git_local_status "$DOTTLE_HOME"
+  git_remote_status "$DOTTLE_HOME"
 }
 
 repo=$1
