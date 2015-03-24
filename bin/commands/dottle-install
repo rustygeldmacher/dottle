@@ -1,7 +1,6 @@
 #!/bin/bash
 
 if [[ "$1" == "--help" ]]; then
-  echo "Install a topic"
   exit 0
 fi
 
