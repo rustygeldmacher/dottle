@@ -20,11 +20,15 @@ function git_local_status()
 function git_remote_status()
 {
   pushd $1 > /dev/null
-  git fetch > /dev/null
-  if [[ $(git log --oneline HEAD..origin | wc -l) -gt 0 ]]; then
-    echo " * Remote changes exist"
+  if [[ $(git remote | wc -l) -gt 0 ]]; then
+    git fetch > /dev/null
+    if [[ $(git log --oneline HEAD..origin | wc -l) -gt 0 ]]; then
+      echo " * Remote changes exist"
+    else
+      echo " * No remote changes"
+    fi
   else
-    echo " * No remote changes"
+    echo " * No remote repository"
   fi
   popd > /dev/null
 }
