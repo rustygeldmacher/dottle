@@ -6,8 +6,13 @@ Dottle is sort of a cross between Homeshick and Zach Holmans dotfiles repository
 
 * Clone dottle:
     git clone git@github.com:rustygeldmacher/dottle.git ~/.dottle
-* Put this line somewhere in your ~/.bashrc:
-    source $HOME/.dottle/bootstrap
+* Make your `~/.bashrc` only this:
+
+```
+#!/bin/bash
+source $HOME/.dottle/bootstrap
+```
+
 * Start a new shell so dottle is enabled
 * Clone a repository, for instance:
     dottle clone <your-github-name>/dotfiles dotfiles
