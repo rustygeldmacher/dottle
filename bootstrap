@@ -1,8 +1,16 @@
-#!/bin/bash
-
 # Source this from bash_profile to bootstrap dottle
 
-export DOTTLE_HOME=`dirname $BASH_SOURCE`
+if [[ "$ZSH_NAME" == "zsh" ]]; then
+  export DOTTLE_HOME=`dirname ${(%):-%x}`
+else
+  export DOTTLE_HOME=`dirname $BASH_SOURCE`
+fi
+
+function dottle_padd() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="${PATH:+"$PATH:"}$1"
+  fi
+}
 
 function dottle() {
   if [[ -z "$1" ]]; then
@@ -21,14 +29,14 @@ function dottle() {
     if [[ -d "$TOPIC_PATH" ]]; then
       # Add a topic's bin directory to the path
       if [[ -d $TOPIC_PATH/bin ]]; then
-        export PATH=$TOPIC_PATH/bin:$PATH
+        dottle_padd $TOPIC_PATH/bin
       fi
       # Initialize the topic
       if [[ -f $TOPIC_PATH/init ]]; then
         source $TOPIC_PATH/init
       fi
       # Initialize the topic platform-specific
-      local platform=`uname | tr [A-Z] [a-z]`
+      local platform=`uname | tr '[A-Z]' '[a-z]'`
       if [[ $platform == "darwin" ]]; then
         platform=osx
       fi
